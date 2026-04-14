@@ -1,0 +1,182 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model User {
+  id                 String   @id @default(cuid())
+  name               String?
+  email              String   @unique
+  emailVerified      DateTime?
+  image              String?
+  googleAccessToken  String?  @db.Text
+  googleRefreshToken String?  @db.Text
+  googleTokenExpiry  Int?
+  waterGoal          Int      @default(64)
+  calorieGoal        Int      @default(2000)
+  proteinGoal        Int      @default(150)
+  accounts           Account[]
+  sessions           Session[]
+  journals           Journal[]
+  moods              Mood[]
+  waterLogs          WaterLog[]
+  workouts           Workout[]
+  workoutLogs        WorkoutLog[]
+  foodLogs           FoodLog[]
+  mealPlans          MealPlan[]
+  tasks              Task[]
+  weeklyScores       WeeklyScore[]
+  createdAt          DateTime @default(now())
+}
+
+model Journal {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title     String
+  body      String
+  tags      String[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Mood {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  value     Int
+  label     String
+  note      String?
+  date      DateTime @default(now())
+}
+
+model WaterLog {
+  id       String   @id @default(cuid())
+  userId   String
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  amount   Int
+  loggedAt DateTime @default(now())
+}
+
+model Workout {
+  id        String            @id @default(cuid())
+  userId    String
+  user      User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name      String
+  exercises WorkoutExercise[]
+  logs      WorkoutLog[]
+  createdAt DateTime          @default(now())
+}
+
+model WorkoutExercise {
+  id        String  @id @default(cuid())
+  workoutId String
+  workout   Workout @relation(fields: [workoutId], references: [id], onDelete: Cascade)
+  name      String
+  sets      Int
+  reps      String
+  order     Int
+}
+
+model WorkoutLog {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  workoutId   String
+  workout     Workout  @relation(fields: [workoutId], references: [id])
+  completedAt DateTime @default(now())
+  notes       String?
+}
+
+model FoodLog {
+  id       String   @id @default(cuid())
+  userId   String
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  mealType String
+  name     String
+  calories Int
+  protein  Float
+  carbs    Float
+  fat      Float
+  loggedAt DateTime @default(now())
+}
+
+model MealPlan {
+  id      String   @id @default(cuid())
+  userId  String
+  user    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  weekday Int
+  meals   Json
+  weekOf  DateTime
+}
+
+model Task {
+  id          String    @id @default(cuid())
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title       String
+  description String?
+  status      String    @default("todo")
+  priority    String    @default("medium")
+  category    String    @default("personal")
+  dueDate     DateTime?
+  calEventId  String?
+  order       Int       @default(0)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model WeeklyScore {
+  id            String   @id @default(cuid())
+  userId        String
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  weekOf        DateTime
+  score         Float
+  moodScore     Float
+  waterScore    Float
+  exerciseScore Float
+  taskScore     Float
+  journalScore  Float
+  createdAt     DateTime @default(now())
+
+  @@unique([userId, weekOf])
+}

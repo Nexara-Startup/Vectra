@@ -1,0 +1,42 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #0f1117;
+  --foreground: #e5e7eb;
+  --accent: #06b6d4;
+  --accent-amber: #f59e0b;
+  --success: #4ade80;
+  --warning: #fb923c;
+  --danger: #f87171;
+}
+
+html,
+body {
+  min-height: 100%;
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+}
+
+.glass {
+  @apply rounded-2xl border border-white/10 bg-white/5 shadow-lg shadow-black/30 backdrop-blur-md;
+}
+
+.page-enter {
+  animation: pageEnter 0.35s ease-out both;
+}
+
+@keyframes pageEnter {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
