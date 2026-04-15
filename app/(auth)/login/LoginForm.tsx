@@ -11,12 +11,15 @@ export function LoginForm({
   googleAuthConfigured,
   emailCredentialsActive,
   showEmailLoginFields,
+  authError,
 }: {
   googleAuthConfigured: boolean
   /** Credentials provider is registered (local `next dev` + AUTH_DEV_PASSWORD). */
   emailCredentialsActive: boolean
   /** Show email/password inputs (local development only; production uses Google). */
   showEmailLoginFields: boolean
+  /** Set by Auth.js when redirecting to `/login?error=…` (e.g. after Google OK but app denied). */
+  authError?: string
 }) {
   const router = useRouter()
   const [email, setEmail] = useState("")
@@ -56,6 +59,24 @@ export function LoginForm({
       <Card className="max-w-md w-full space-y-6 p-8">
         <div className="text-center">
           <h1 className="font-display text-4xl tracking-tight text-white">Vectra</h1>
+          {authError === "AccessDenied" ? (
+            <div className="mt-4 rounded-xl border border-rose-500/35 bg-rose-500/10 p-4 text-left text-sm text-rose-100/95">
+              <p className="font-medium text-rose-200">Sign-in did not finish</p>
+              <p className="mt-2 text-xs leading-relaxed text-rose-100/85">
+                Google worked, but the app could not save your account. This is usually the{" "}
+                <strong className="font-medium text-rose-100">database</strong> on the server: wrong or
+                missing <code className="rounded bg-black/30 px-1">DATABASE_URL</code>, tables not
+                migrated, or Supabase not reachable from Vercel (use the{" "}
+                <strong className="font-medium text-rose-100">pooler</strong> URL on port{" "}
+                <code className="rounded bg-black/30 px-1">6543</code> with{" "}
+                <code className="rounded bg-black/30 px-1">?pgbouncer=true</code>). Check Vercel
+                function logs for{" "}
+                <code className="rounded bg-black/30 px-1">[auth] Google persist failed</code>, fix
+                env / run <code className="rounded bg-black/30 px-1">npx prisma migrate deploy</code>,
+                then try again.
+              </p>
+            </div>
+          ) : null}
           <p className="mt-2 text-sm text-zinc-400">
             {googleAuthConfigured && !showEmailLoginFields
               ? "Sign in with Google to continue."

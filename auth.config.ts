@@ -7,7 +7,8 @@ import type { NextAuthConfig } from "next-auth"
  */
 export const authConfig = {
   trustHost: true,
-  pages: { signIn: "/login" },
+  /** Send OAuth errors (e.g. AccessDenied) to our login page with ?error=… */
+  pages: { signIn: "/login", error: "/login" },
   providers: [],
   callbacks: {
     async session({ session, token }) {

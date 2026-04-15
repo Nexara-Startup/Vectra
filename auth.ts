@@ -140,7 +140,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       try {
         await persistGoogleUser(user, account as Account)
       } catch (e) {
-        console.error("[auth] Google persist failed", e)
+        const msg = e instanceof Error ? e.message : String(e)
+        console.error("[auth] Google persist failed:", msg, e)
         return false
       }
       return true
