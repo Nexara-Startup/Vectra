@@ -10,7 +10,7 @@ export function PageWrapper({
   children: React.ReactNode
 }) {
   return (
-    <div className="page-enter mx-auto max-w-6xl px-4 pb-28 pt-6 sm:px-6 sm:pb-10 lg:px-8">
+    <div className="page-enter mx-auto max-w-6xl px-4 pb-[max(1.5rem,calc(env(safe-area-inset-bottom)+1rem))] pt-6 sm:px-6 sm:pb-10 lg:px-8">
       <header className="mb-8">
         <div className="flex items-center gap-3">
           <span className="h-8 w-1 rounded-full" style={{ backgroundColor: accent }} />

@@ -4,12 +4,18 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { signOut } from "next-auth/react"
 import { Button } from "@/components/ui/Button"
+import { VectraMark } from "@/components/icons/VectraMark"
 
 export function Navbar({ title }: { title?: string }) {
   const pathname = usePathname()
   return (
-    <header className="sticky top-0 z-30 flex items-center justify-between border-b border-white/10 bg-[#0f1117]/80 px-4 py-3 backdrop-blur lg:hidden">
-      <Link href="/dashboard" className="font-display text-lg text-white">
+    <header className="flex items-center justify-between px-4 py-3 lg:hidden">
+      <Link
+        href="/dashboard"
+        aria-label="Vectra dashboard"
+        className="flex items-center gap-2 font-display text-lg text-white"
+      >
+        <VectraMark className="h-8 w-8 shrink-0 rounded-md" />
         Vectra
       </Link>
       <div className="flex items-center gap-2">

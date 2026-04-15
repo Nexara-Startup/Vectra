@@ -19,6 +19,9 @@ export const metadata: Metadata = {
   title: "Vectra",
   description: "Personal self-improvement — habits, health, and clarity in one place.",
   manifest: "/manifest.json",
+  icons: {
+    apple: [{ url: "/icons/icon-192.png", sizes: "192x192", type: "image/png" }],
+  },
   appleWebApp: {
     capable: true,
     title: "Vectra",

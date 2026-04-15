@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation"
 import toast from "react-hot-toast"
 import { Button } from "@/components/ui/Button"
 import { Card } from "@/components/ui/Card"
+import { VectraMark } from "@/components/icons/VectraMark"
 
 export function LoginForm({
   googleAuthConfigured,
@@ -58,7 +59,10 @@ export function LoginForm({
     <div className="flex min-h-dvh items-center justify-center bg-[#0f1117] px-4">
       <Card className="max-w-md w-full space-y-6 p-8">
         <div className="text-center">
-          <h1 className="font-display text-4xl tracking-tight text-white">Vectra</h1>
+          <h1 className="font-display flex flex-col items-center gap-3 text-4xl tracking-tight text-white">
+            <VectraMark className="h-16 w-16 rounded-2xl shadow-lg" />
+            Vectra
+          </h1>
           {authError === "AccessDenied" ? (
             <div className="mt-4 rounded-xl border border-rose-500/35 bg-rose-500/10 p-4 text-left text-sm text-rose-100/95">
               <p className="font-medium text-rose-200">Sign-in did not finish</p>

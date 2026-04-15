@@ -6,6 +6,7 @@ import { signOut } from "next-auth/react"
 import { NAV_ITEMS } from "./nav"
 import { useUiStore } from "@/store/uiStore"
 import { Button } from "@/components/ui/Button"
+import { VectraMark } from "@/components/icons/VectraMark"
 
 export function Sidebar() {
   const pathname = usePathname()
@@ -17,8 +18,13 @@ export function Sidebar() {
       className={`sticky top-0 hidden h-dvh shrink-0 flex-col border-r border-white/10 bg-[#0c0e14]/90 px-3 py-6 backdrop-blur-xl lg:flex ${collapsed ? "w-[72px]" : "w-60"}`}
     >
       <div className="mb-8 flex items-center justify-between px-1">
-        <Link href="/dashboard" className="font-display text-lg tracking-tight text-white">
-          {collapsed ? "V" : "Vectra"}
+        <Link
+          href="/dashboard"
+          aria-label="Vectra dashboard"
+          className="flex min-w-0 items-center gap-2 font-display text-lg tracking-tight text-white"
+        >
+          <VectraMark className="h-9 w-9 shrink-0 rounded-lg" />
+          {collapsed ? <span className="sr-only">Vectra</span> : <span>Vectra</span>}
         </Link>
         <button
           type="button"

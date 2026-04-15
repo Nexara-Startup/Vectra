@@ -16,11 +16,13 @@ export default async function AppLayout({ children }: { children: React.ReactNod
   return (
     <div className="flex min-h-dvh">
       <Sidebar />
-      <div className="min-w-0 flex-1">
-        <Navbar />
-        {children}
+      <div className="flex min-w-0 flex-1 flex-col">
+        <div className="sticky top-0 z-40 shrink-0 border-b border-white/10 bg-[#0f1117]/95 pt-[env(safe-area-inset-top)] backdrop-blur-xl lg:hidden">
+          <Navbar />
+          <MobileNav />
+        </div>
+        <div className="min-w-0 flex-1">{children}</div>
       </div>
-      <MobileNav />
     </div>
   )
 }
